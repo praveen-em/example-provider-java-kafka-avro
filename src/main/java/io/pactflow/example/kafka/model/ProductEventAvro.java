@@ -1,13 +1,15 @@
-package io.pactflow.example.kafka;
+package io.pactflow.example.kafka.model;
 
 import lombok.Data;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import io.pactflow.example.kafka.model.generated.EventType;
+
 
 
 @Data
-class ProductEvent {
+public class ProductEventAvro {
   @JsonFormat( shape = JsonFormat.Shape.STRING)
   private String id;
   private String name;
@@ -16,14 +18,14 @@ class ProductEvent {
   private Double price;
   private EventType event;
 
-  ProductEvent() {}
+  public ProductEventAvro() {}
 
-  ProductEvent(String id, String name, String type, String version, EventType event, Double price) {
+  public ProductEventAvro(String id, String name, String type, String version, EventType event, Double price) {
     this.id = id;
     this.name = name;
     this.type = type;
     this.version = version;
-    this.event = event;
     this.price = price;
+    this.event = event;
   }
 }

@@ -1,16 +1,19 @@
 plugins {
-	id 'org.springframework.boot' version '2.3.0.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'org.springframework.boot' version '3.1.1'
+	id 'io.spring.dependency-management' version '1.1.0'
 	id 'java'
-  id "au.com.dius.pact" version "4.1.0"
+  	id "au.com.dius.pact" version "4.6.1"
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+//sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()
+	maven {
+		url "https://packages.confluent.io/maven"
+	}
 }
 
 configurations {
@@ -19,22 +22,49 @@ configurations {
   }
 }
 
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.kafka:spring-kafka'
-	testImplementation 'au.com.dius.pact.provider:junit5:4.1.7'
-	testImplementation 'au.com.dius.pact.provider:spring:4.1.7'
+	testImplementation 'au.com.dius.pact.provider:junit5:4.6.1'
+//	testImplementation 'au.com.dius.pact.provider:spring:4.6.1'
 	runtimeOnly 'com.h2database:h2'
-  compileOnly 'org.projectlombok:lombok'
-  annotationProcessor 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok:1.18.28'
+	annotationProcessor 'org.projectlombok:lombok:1.18.28'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+//		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	implementation 'com.github.javafaker:javafaker:1.0.2'
+	
+	// https://mvnrepository.com/artifact/org.apache.avro/avro
+	implementation 'org.apache.avro:avro:1.11.1'
+
+	// https://mvnrepository.com/artifact/io.confluent/kafka-avro-serializer
+	implementation 'io.confluent:kafka-avro-serializer:7.3.3'
+
+	// https://mvnrepository.com/artifact/io.confluent/kafka-json-schema-serializer
+	implementation 'io.confluent:kafka-json-schema-serializer:7.3.3'
+
 }
+
 
 test {
 	useJUnitPlatform()
+	systemProperties System.getProperties().subMap(['git_commit', 'git_branch', 'ci' ])
+	environment 'PACT_BROKER_BASE_URL', System.getenv('PACT_BROKER_BASE_URL') ?: 'https://praveenem.pactflow.io'
+	environment 'PACT_BROKER_TOKEN', System.getenv('PACT_BROKER_TOKEN') ?: 'sM59vhvwEHC0JfOGQu3MIA'
+	environment 'PACT_BROKER_HOST', System.getenv('PACT_BROKER_HOST') ?: 'praveenem.pactflow.io'	
+	if (System.getProperty('ci') == 'true') {
+		environment 'PACT_BROKER_PUBLISH_VERIFICATION_RESULTS', true
+		environment 'GIT_COMMIT', System.getProperty('git_commit')
+    	environment 'GIT_BRANCH', System.getProperty('git_branch')
+	}
+	systemProperty('pact_do_not_track', 'true');
 }
 
 pact {

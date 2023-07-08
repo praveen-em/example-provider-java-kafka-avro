@@ -1,0 +1,89 @@
+{
+    "type": "record",
+    "name": "ProductEvent",
+    "namespace": "io.pactflow.example.kafka.model.generated",
+    "fields": [
+        {
+            "name": "id",
+            "type": "string"
+        },
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "type",
+            "type": "string"
+        },
+        {
+            "name": "version",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "event",
+            "type": {
+                "name": "EventType",
+                "type": "enum",
+                "symbols": ["CREATED","UPDATED","DELETED", "UNKNOWN"]
+            },
+            "default": "UNKNOWN"
+        },
+        {
+            "name": "createdOn",
+            "type": "int",
+            "logicalType": "date"
+        },
+        {
+            "name": "price",
+            "type": [
+                "null",
+                {
+                    "type": "bytes",
+                    "logicalType": "decimal",
+                    "precision": 4,
+                    "scale": 2
+                }
+            ],
+        },
+        {
+            "name": "available",
+            "type": "boolean"
+        },
+        {
+            "name": "location",
+            "type": "record",
+            "fields": [
+                {
+                    "name": "doorNumber",
+                    "type": "int"
+                },
+                {
+                    "name": "street",
+                    "type": "string"
+                },
+                {
+                    "name": "postcode",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "relatedItems",
+            "type":
+            {
+                "type": "array",
+                "items": "string"
+            },
+
+        },
+        {
+            "name": "otherInfo",
+            "type":
+            {
+                "type": "map",
+                "values": "string"
+            }
+        }
+    ]
+}

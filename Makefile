@@ -29,16 +29,20 @@ fake_ci: .env
 	GIT_COMMIT=`git rev-parse --short HEAD`+`date +%s` \
 	GIT_BRANCH=`git rev-parse --abbrev-ref HEAD` \
 	PACT_BROKER_PUBLISH_VERIFICATION_RESULTS=true \
+	PACT_BROKER_BASE_URL=https://praveenem.pactflow.io \
+	PACT_BROKER_TOKEN=sM59vhvwEHC0JfOGQu3MIA \
 	make ci
 
 ci_webhook: .env
-	./gradlew clean test -i
+	./gradlew clean test -i -Dci=${CI} -Dgit_commit=${GIT_COMMIT} -Dgit_branch=${GIT_BRANCH}
 
 fake_ci_webhook:
 	CI=true \
 	GIT_COMMIT=`git rev-parse --short HEAD`+`date +%s` \
 	GIT_BRANCH=`git rev-parse --abbrev-ref HEAD` \
 	PACT_BROKER_PUBLISH_VERIFICATION_RESULTS=true \
+	PACT_BROKER_BASE_URL=https://praveenem.pactflow.io \
+	PACT_BROKER_TOKEN=sM59vhvwEHC0JfOGQu3MIA \
 	make ci_webhook
 
 ## =====================
@@ -46,7 +50,7 @@ fake_ci_webhook:
 ## =====================
 
 test: .env
-	./gradlew clean test -i
+	./gradlew clean test -i -Dci=${CI} -Dgit_commit=${GIT_COMMIT} -Dgit_branch=${GIT_BRANCH}
 
 ## =====================
 ## Deploy tasks
