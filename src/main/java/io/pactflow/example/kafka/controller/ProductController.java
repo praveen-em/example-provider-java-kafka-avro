@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.pactflow.example.kafka.kafka.Producer;
-import io.pactflow.example.kafka.model.ProductEventAvro;
+import io.pactflow.example.kafka.model.generated.ProductEventAvro;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 

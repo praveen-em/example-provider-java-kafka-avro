@@ -4,18 +4,19 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 
-import io.pactflow.example.kafka.model.ProductEventAvro;
+import io.pactflow.example.kafka.model.generated.ProductEventAvro;
 
 public class AvroMessageBuilder {
 
-    private io.pactflow.example.kafka.model.generated.ProductEventAvro productAvroRecord = new io.pactflow.example.kafka.model.generated.ProductEventAvro();
+    private ProductEventAvro productAvroRecord = new ProductEventAvro();
 
     public AvroMessageBuilder withProduct(ProductEventAvro productEvent) {
-        this.productAvroRecord.setId(productEvent.getId());
-        this.productAvroRecord.setName(productEvent.getName());
-        this.productAvroRecord.setType(productEvent.getType());
-        this.productAvroRecord.setVersion(productEvent.getVersion());
-        this.productAvroRecord.setEvent(productEvent.getEvent());
+//        this.productAvroRecord.setId(productEvent.getId());
+//        this.productAvroRecord.setName(productEvent.getName());
+//        this.productAvroRecord.setType(productEvent.getType());
+//        this.productAvroRecord.setVersion(productEvent.getVersion());
+//        this.productAvroRecord.setEvent(productEvent.getEvent());
+        this.productAvroRecord = productEvent;
         return this;
     }
 

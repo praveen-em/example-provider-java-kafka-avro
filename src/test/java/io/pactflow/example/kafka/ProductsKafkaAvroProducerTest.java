@@ -12,7 +12,7 @@ import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
 import au.com.dius.pact.provider.junitsupport.loader.PactBrokerAuth;
 import au.com.dius.pact.provider.junitsupport.loader.VersionSelector;
 import io.pactflow.example.kafka.kafka.AvroMessageBuilder;
-import io.pactflow.example.kafka.model.ProductEventAvro;
+import io.pactflow.example.kafka.model.generated.ProductEventAvro;
 import io.pactflow.example.kafka.model.generated.EventType;
 
 import java.io.ByteArrayOutputStream;
@@ -56,14 +56,14 @@ import org.springframework.messaging.Message;
 
   @PactVerifyProvider("a product event update")
   public MessageAndMetadata productUpdateEvent() throws Exception {
-    ProductEventAvro productEvent = new ProductEventAvro("id1", "product name", "product type", "v1", EventType.UPDATED, 15.00);
+    ProductEventAvro productEvent = new ProductEventAvro("id1", "product name", "product type", "v1", EventType.UPDATED);
     Message<io.pactflow.example.kafka.model.generated.ProductEventAvro> message = new AvroMessageBuilder().withProduct(productEvent).build();
     return generateMessageAndMetadata(message);
   }
 
   @PactVerifyProvider("a product created event")
   public MessageAndMetadata productCreateEvent() throws Exception {
-    ProductEventAvro productEvent = new ProductEventAvro("5cc989d0-d800-434c-b4bb-b1268499e850", "product name", "product series", "v1", EventType.UPDATED, 15.00);
+    ProductEventAvro productEvent = new ProductEventAvro("5cc989d0-d800-434c-b4bb-b1268499e850", "product name", "product series", "v1", EventType.UPDATED);
     Message<io.pactflow.example.kafka.model.generated.ProductEventAvro> message = new AvroMessageBuilder().withProduct(productEvent).build();
     return generateMessageAndMetadata(message);
   }

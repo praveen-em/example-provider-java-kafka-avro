@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import com.github.javafaker.Faker;
 
 import io.pactflow.example.kafka.kafka.Producer;
-import io.pactflow.example.kafka.model.ProductEventAvro;
+import io.pactflow.example.kafka.model.generated.ProductEventAvro;
 import io.pactflow.example.kafka.model.generated.EventType;
 
 @Component
@@ -34,8 +34,8 @@ public class DummyEventGenerator {
 				faker.commerce().productName(),
 				faker.commerce().material(), 
 				"v1", 
-				faker.options().option(EventType.class), 
-				Double.parseDouble(faker.commerce().price())
+				faker.options().option(EventType.class)
+//				Double.parseDouble(faker.commerce().price())
 			);	
 
 			log.info("sending random product event to topic: {}", event);
