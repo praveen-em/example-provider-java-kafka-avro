@@ -1,6 +1,6 @@
 {
     "type": "record",
-    "name": "ProductEventAvro",
+    "name": "ProductEvent",
     "namespace": "io.pactflow.example.kafka.model.generated",
     "fields": [
         {
@@ -22,12 +22,89 @@
         },
         {
             "name": "event",
-            "type": {
+            "type":
+            {
                 "name": "EventType",
                 "type": "enum",
                 "symbols": ["CREATED","UPDATED","DELETED", "UNKNOWN"]
             },
             "default": "UNKNOWN"
+        },
+        {
+            "name": "createdOn",
+            "type": [
+                "null",
+                {
+                    "type": "int",
+                    "logicalType": "date"
+                }
+            ],
+            "default": null
+        },
+        {
+            "name": "price",
+            "type": [
+                "null",
+                {
+                    "type": "bytes",
+                    "logicalType": "decimal",
+                    "precision": 6,
+                    "scale": 2
+                }
+            ],
+            "default": null
+        },
+        {
+            "name": "available",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "location",
+            "type": [
+                "null",
+                {
+                "name": "Address",
+                "type": "record",
+                "fields": [
+                    {
+                        "name": "doorNumber",
+                        "type": "int"
+                    },
+                    {
+                        "name": "street",
+                        "type": "string"
+                    },
+                    {
+                        "name": "postcode",
+                        "type": "string"
+                    }
+                ]
+                }
+            ],
+            "default": null
+        },
+        {
+            "name": "relatedItems",
+            "type": [
+                "null",
+                {
+                    "type": "array",
+                    "items": "string"
+                }
+            ],
+            "default": null
+        },
+        {
+            "name": "otherInfo",
+            "type": [
+                "null",
+                {
+                    "type": "map",
+                    "values": "string"
+                }
+            ],
+            "default": null
         }
     ]
 }

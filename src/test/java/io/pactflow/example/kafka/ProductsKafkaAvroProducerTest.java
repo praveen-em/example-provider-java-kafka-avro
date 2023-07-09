@@ -12,7 +12,7 @@ import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
 import au.com.dius.pact.provider.junitsupport.loader.PactBrokerAuth;
 import au.com.dius.pact.provider.junitsupport.loader.VersionSelector;
 import io.pactflow.example.kafka.kafka.AvroMessageBuilder;
-import io.pactflow.example.kafka.model.generated.ProductEventAvro;
+import io.pactflow.example.kafka.model.generated.ProductEvent;
 import io.pactflow.example.kafka.model.generated.EventType;
 
 import java.io.ByteArrayOutputStream;
@@ -56,25 +56,37 @@ import org.springframework.messaging.Message;
 
   @PactVerifyProvider("a product event update")
   public MessageAndMetadata productUpdateEvent() throws Exception {
-    ProductEventAvro productEvent = new ProductEventAvro("id1", "product name", "product type", "v1", EventType.UPDATED);
-    Message<io.pactflow.example.kafka.model.generated.ProductEventAvro> message = new AvroMessageBuilder().withProduct(productEvent).build();
+    ProductEvent productEvent = ProductEvent.newBuilder()
+            .setId("id1")
+            .setName("product name")
+            .setType("product type")
+            .setVersion("v1")
+            .setEvent(EventType.UPDATED)
+            .build();
+    Message<ProductEvent> message = new AvroMessageBuilder().withProduct(productEvent).build();
     return generateMessageAndMetadata(message);
   }
 
   @PactVerifyProvider("a product created event")
   public MessageAndMetadata productCreateEvent() throws Exception {
-    ProductEventAvro productEvent = new ProductEventAvro("5cc989d0-d800-434c-b4bb-b1268499e850", "product name", "product series", "v1", EventType.UPDATED);
-    Message<io.pactflow.example.kafka.model.generated.ProductEventAvro> message = new AvroMessageBuilder().withProduct(productEvent).build();
+    ProductEvent productEvent = ProductEvent.newBuilder()
+            .setId("5cc989d0-d800-434c-b4bb-b1268499e850")
+            .setName("product name")
+            .setType("product type")
+            .setVersion("v1")
+            .setEvent(EventType.CREATED)
+            .build();
+    Message<ProductEvent> message = new AvroMessageBuilder().withProduct(productEvent).build();
     return generateMessageAndMetadata(message);
   }
 
-  private MessageAndMetadata generateMessageAndMetadata(Message<io.pactflow.example.kafka.model.generated.ProductEventAvro> message) throws IOException {
+  private MessageAndMetadata generateMessageAndMetadata(Message<io.pactflow.example.kafka.model.generated.ProductEvent> message) throws IOException {
     HashMap<String, Object> metadata = new HashMap<String, Object>();
     message.getHeaders().forEach((k, v) -> metadata.put(k, v));
 //    ObjectMapper objectMapper = new ObjectMapper();
 //    String jsonString = objectMapper.writeValueAsString(message.getPayload().toString());
 //    return new MessageAndMetadata(Json.parse(jsonString).asString().getBytes(), metadata);
-    return new MessageAndMetadata(encode(message.getPayload(), io.pactflow.example.kafka.model.generated.ProductEventAvro.SCHEMA$), metadata);
+    return new MessageAndMetadata(encode(message.getPayload(), io.pactflow.example.kafka.model.generated.ProductEvent.SCHEMA$), metadata);
   }
 
   public static byte[] encode(GenericRecord record, Schema schema) throws IOException {

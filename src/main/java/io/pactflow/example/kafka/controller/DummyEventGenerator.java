@@ -1,6 +1,10 @@
 package io.pactflow.example.kafka.controller;
 
 
+import com.github.javafaker.Faker;
+import io.pactflow.example.kafka.kafka.Producer;
+import io.pactflow.example.kafka.model.generated.Address;
+import io.pactflow.example.kafka.model.generated.ProductEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.github.javafaker.Faker;
-
-import io.pactflow.example.kafka.kafka.Producer;
-import io.pactflow.example.kafka.model.generated.ProductEventAvro;
-import io.pactflow.example.kafka.model.generated.EventType;
+import java.time.ZoneId;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class DummyEventGenerator {
@@ -30,16 +33,29 @@ public class DummyEventGenerator {
 	public void generateProductEvent() {
 		log.info("SEND_TEST_EVENTS {}", sendTestEvents);
 		if (sendTestEvents) {
-			final ProductEventAvro event = new ProductEventAvro(faker.internet().uuid(),
-				faker.commerce().productName(),
-				faker.commerce().material(), 
-				"v1", 
-				faker.options().option(EventType.class)
-//				Double.parseDouble(faker.commerce().price())
-			);	
+			Address.Builder addressBuilder = Address.newBuilder();
+			addressBuilder
+					.setDoorNumber(Integer.parseInt(faker.address().buildingNumber()))
+					.setStreet(faker.address().streetAddress())
+					.setPostcode(faker.address().zipCode());
 
-			log.info("sending random product event to topic: {}", event);
-			producer.sendMessage(event);
+			ProductEvent productEvent = ProductEvent.newBuilder()
+					.setId(faker.internet().uuid())
+					.setName(faker.commerce().productName())
+					.setType(faker.commerce().material())
+					.setVersion("v1")
+//					.setPrice(ByteBuffer.wrap(faker.commerce().price(1000, 9999).getBytes()))
+					.setCreatedOn(faker.date().past(5, TimeUnit.DAYS).toInstant().atZone(ZoneId.of("Europe/London")).toLocalDate())
+					.setLocationBuilder(addressBuilder)
+					.setRelatedItems(Arrays.asList("someitem", faker.hipster().word(), faker.hipster().word()))
+					.setOtherInfo(Map.of("key1", "value1",
+							"key2", "value2",
+							"key3", "value3"))
+					.build();
+
+
+			log.info("sending random product event to topic: {}", productEvent);
+			producer.sendMessage(productEvent);
 		}
 	}
 }

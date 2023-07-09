@@ -1,12 +1,12 @@
 package io.pactflow.example.kafka.controller;
 
+import io.pactflow.example.kafka.model.generated.ProductEvent;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.pactflow.example.kafka.kafka.Producer;
-import io.pactflow.example.kafka.model.generated.ProductEventAvro;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -22,7 +22,7 @@ class ProductController {
   }
 
   @PostMapping("/products")
-  ProductEventAvro newProduct(@RequestBody ProductEventAvro newProduct) {
+  ProductEvent newProduct(@RequestBody ProductEvent newProduct) {
     producer.sendMessage(newProduct);
     return newProduct;
   }
