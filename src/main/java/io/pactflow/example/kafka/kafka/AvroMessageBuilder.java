@@ -17,7 +17,7 @@ public class AvroMessageBuilder {
     public Message<ProductEvent> build() throws Exception {
         return MessageBuilder
             .withPayload(this.productAvroRecord)
-            .setHeader(KafkaHeaders.TOPIC, "products-avro-v2")
+            .setHeader(KafkaHeaders.TOPIC, "products-avro-v4")
             .setHeader(KafkaHeaders.KEY, productAvroRecord.getId())
             .setHeader("content-Type", "avro/binary; record=ProductEventAvro")
             .build();

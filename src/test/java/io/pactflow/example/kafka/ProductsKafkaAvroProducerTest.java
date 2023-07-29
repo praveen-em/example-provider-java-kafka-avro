@@ -72,7 +72,7 @@ import org.springframework.messaging.Message;
     ProductEvent productEvent = ProductEvent.newBuilder()
             .setId("5cc989d0-d800-434c-b4bb-b1268499e850")
             .setName("product name")
-            .setType("product type")
+            .setType("product series")
             .setVersion("v1")
             .setEvent(EventType.CREATED)
             .build();

@@ -1,110 +1,172 @@
-{
+[
+  {
+    "type": "record",
+    "name": "subProduct",
+    "namespace": "io.pactflow.example.kafka.model.generated",
+    "fields": [
+      {
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "name": "id",
+        "type": "int"
+      }
+    ]
+  },
+  {
     "type": "record",
     "name": "ProductEvent",
     "namespace": "io.pactflow.example.kafka.model.generated",
     "fields": [
-        {
-            "name": "id",
-            "type": "string"
+      {
+        "name": "id",
+        "type": "string"
+      },
+      {
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "name": "type",
+        "type": "string"
+      },
+      {
+        "name": "version",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "name": "event",
+        "type": {
+          "name": "EventType",
+          "type": "enum",
+          "symbols": [
+            "CREATED",
+            "UPDATED",
+            "DELETED",
+            "UNKNOWN"
+          ]
         },
-        {
-            "name": "name",
-            "type": "string"
+        "default": "UNKNOWN"
+      },
+      {
+        "name": "createdOn",
+        "type": [
+          "null",
+          {
+            "type": "int",
+            "logicalType": "date"
+          }
+        ],
+        "default": null
+      },
+      {
+        "name": "price",
+        "type": [
+          "null",
+          {
+            "type": "bytes",
+            "logicalType": "decimal",
+            "precision": 6,
+            "scale": 2
+          }
+        ],
+        "default": null
+      },
+      {
+        "name": "available",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "name": "location",
+        "type": [
+          "null",
+          {
+            "name": "Address",
+            "type": "record",
+            "fields": [
+              {
+                "name": "doorNumber",
+                "type": "int"
+              },
+              {
+                "name": "street",
+                "type": "string"
+              },
+              {
+                "name": "postcode",
+                "type": "string"
+              }
+            ]
+          }
+        ],
+        "default": null
+      },
+      {
+        "name": "relatedItems",
+        "type": [
+          "null",
+          {
+            "type": "array",
+            "items": "string"
+          }
+        ],
+        "default": null
+      },
+      {
+        "name": "otherInfo",
+        "type": {
+          "type": "map",
+          "values": "string"
         },
-        {
-            "name": "type",
-            "type": "string"
+        "default": {}
+      },
+      {
+        "name": "otherInfo2",
+        "type": [
+          "null",
+          {
+            "type": "map",
+            "values": "string"
+          }
+        ],
+        "default": null
+      },
+      {
+        "name": "misc",
+        "type": [
+          "string",
+          {
+            "type": "array",
+            "items": "int"
+          }
+        ],
+        "default": "miscellaneous"
+      },
+      {
+        "name": "misc2",
+        "type": {
+          "type": "array",
+          "items": "int"
         },
-        {
-            "name": "version",
-            "type": "string",
-            "default": ""
-        },
-        {
-            "name": "event",
-            "type":
-            {
-                "name": "EventType",
-                "type": "enum",
-                "symbols": ["CREATED","UPDATED","DELETED", "UNKNOWN"]
-            },
-            "default": "UNKNOWN"
-        },
-        {
-            "name": "createdOn",
-            "type": [
-                "null",
-                {
-                    "type": "int",
-                    "logicalType": "date"
-                }
-            ],
-            "default": null
-        },
-        {
-            "name": "price",
-            "type": [
-                "null",
-                {
-                    "type": "bytes",
-                    "logicalType": "decimal",
-                    "precision": 6,
-                    "scale": 2
-                }
-            ],
-            "default": null
-        },
-        {
-            "name": "available",
-            "type": "boolean",
-            "default": false
-        },
-        {
-            "name": "location",
-            "type": [
-                "null",
-                {
-                "name": "Address",
-                "type": "record",
-                "fields": [
-                    {
-                        "name": "doorNumber",
-                        "type": "int"
-                    },
-                    {
-                        "name": "street",
-                        "type": "string"
-                    },
-                    {
-                        "name": "postcode",
-                        "type": "string"
-                    }
-                ]
-                }
-            ],
-            "default": null
-        },
-        {
-            "name": "relatedItems",
-            "type": [
-                "null",
-                {
-                    "type": "array",
-                    "items": "string"
-                }
-            ],
-            "default": null
-        },
-        {
-            "name": "otherInfo",
-            "type": [
-                "null",
-                {
-                    "type": "map",
-                    "values": "string"
-                }
-            ],
-            "default": null
-        }
+        "default": [
+          0,
+          0
+        ]
+      },
+      {
+        "name": "misc3",
+        "type": [
+          "int",
+          {
+            "type": "array",
+            "items": "io.pactflow.example.kafka.model.generated.subProduct"
+          }
+        ],
+        "default": 0
+      }
     ]
-}
+  }
+]
